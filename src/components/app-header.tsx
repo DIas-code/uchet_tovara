@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { BarChart3, LogOut, Package, Store, Tags } from "lucide-react";
+import { LogOut, Store } from "lucide-react";
 import { signOut } from "@/lib/actions/auth";
+import { AppNav } from "@/components/app-nav";
 import { Button } from "@/components/ui/button";
 import type { CurrentUser } from "@/lib/auth";
 
-// Шапка приложения: имя бутика, роль и кнопка выхода.
+// Шапка приложения: имя бутика, роль, навигация и кнопка выхода.
 export async function AppHeader({ user }: { user: CurrentUser }) {
   const t = await getTranslations();
   const roleLabel = t(`roles.${user.role}`);
@@ -20,29 +21,13 @@ export async function AppHeader({ user }: { user: CurrentUser }) {
             <span className="text-muted-foreground text-xs">{roleLabel}</span>
           </span>
         </Link>
-        <nav className="flex items-center gap-4 text-sm">
-          <Link
-            href="/products"
-            className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
-          >
-            <Package className="size-4" />
-            {t("nav.products")}
-          </Link>
-          <Link
-            href="/categories"
-            className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
-          >
-            <Tags className="size-4" />
-            {t("nav.categories")}
-          </Link>
-          <Link
-            href="/reports"
-            className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
-          >
-            <BarChart3 className="size-4" />
-            {t("nav.reports")}
-          </Link>
-        </nav>
+        <AppNav
+          labels={{
+            products: t("nav.products"),
+            categories: t("nav.categories"),
+            reports: t("nav.reports"),
+          }}
+        />
       </div>
       <form action={signOut}>
         <Button type="submit" variant="outline" size="sm">

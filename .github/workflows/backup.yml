@@ -1,0 +1,41 @@
+name: backup
+
+# Ежедневный бэкап ДАННЫХ базы (схема хранится в supabase/migrations, поэтому
+# достаточно данных). Дамп сохраняется как артефакт запуска (retention 30 дней).
+#
+# Требуется один секрет репозитория: SUPABASE_DB_URL
+#   Supabase → Project Settings → Database → Connection string → URI
+#   (строка вида postgresql://postgres:ПАРОЛЬ@db.xxxx.supabase.co:5432/postgres)
+# Как добавить: GitHub → репозиторий → Settings → Secrets and variables →
+#   Actions → New repository secret.
+
+on:
+  schedule:
+    - cron: "30 3 * * *" # каждый день 03:30 UTC
+  workflow_dispatch: {}
+
+jobs:
+  dump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Dump data
+        run: |
+          supabase db dump \
+            --db-url "${{ secrets.SUPABASE_DB_URL }}" \
+            --data-only \
+            -f backup-data.sql
+          ls -lh backup-data.sql
+
+      - name: Timestamp
+        id: ts
+        run: echo "date=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: backup-${{ steps.ts.outputs.date }}
+          path: backup-data.sql
+          retention-days: 30

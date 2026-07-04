@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import { Store } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,7 @@ import {
 
 export default function LoginPage() {
   const t = useTranslations("login");
+  const ta = useTranslations("app");
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,7 +47,13 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex flex-1 items-center justify-center p-4">
+    <main className="flex flex-1 flex-col items-center justify-center gap-6 p-4">
+      <div className="flex flex-col items-center gap-2">
+        <div className="bg-primary text-primary-foreground flex size-12 items-center justify-center rounded-xl">
+          <Store className="size-6" />
+        </div>
+        <span className="text-lg font-semibold">{ta("title")}</span>
+      </div>
       <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>{t("title")}</CardTitle>

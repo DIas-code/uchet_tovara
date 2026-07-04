@@ -1,0 +1,19 @@
+name: keep-alive
+
+# Раз в сутки пингуем прод-приложение. Запрос идёт в Supabase (проверка сессии),
+# поэтому бесплатный проект не засыпает после 7 дней бездействия.
+# Секреты не нужны.
+
+on:
+  schedule:
+    - cron: "0 6 * * *" # каждый день 06:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping app
+        run: |
+          code=$(curl -sS -o /dev/null -w "%{http_code}" https://uchet-tovara-e1u1.vercel.app/login)
+          echo "HTTP $code"
