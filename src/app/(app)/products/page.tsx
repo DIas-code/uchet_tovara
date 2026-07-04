@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { formatMoney } from "@/lib/format";
 
 const NO_CATEGORY = "__none__";
 
@@ -69,7 +70,6 @@ export default async function ProductsPage({
 
   const { data } = await query;
   const products = (data ?? []) as ProductRow[];
-  const fmt = new Intl.NumberFormat("ru-RU");
 
   // Ссылка на плашку категории с сохранением поиска и фильтра наличия.
   function chipHref(cat: string | null) {
@@ -114,7 +114,7 @@ export default async function ProductsPage({
         {p.stock > 0 ? p.stock : <Badge variant="secondary">0</Badge>}
       </TableCell>
       <TableCell className="text-right tabular-nums">
-        {fmt.format(p.sale_price)}
+        {formatMoney(p.sale_price)}
       </TableCell>
       <TableCell className="text-right">
         <ProductRowActions product={p} role={role} categories={categories} />
@@ -123,7 +123,7 @@ export default async function ProductsPage({
   );
 
   return (
-    <main className="flex flex-1 flex-col gap-4 p-6">
+    <main className="flex flex-1 flex-col gap-4 p-4 sm:p-6">
       <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
 
       <ProductsToolbar
@@ -154,7 +154,7 @@ export default async function ProductsPage({
         })}
       </div>
 
-      <div className="rounded-md border">
+      <div className="overflow-x-auto rounded-md border">
         <Table>
           <TableHeader>
             <TableRow>

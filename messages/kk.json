@@ -36,7 +36,11 @@
   },
   "dashboard": {
     "title": "Басты бет",
-    "subtitle": "Қош келдіңіз. Бөлімдер навигацияда."
+    "subtitle": "Қош келдіңіз. Бөлімдер жоғарыда.",
+    "totalProducts": "Тауарлар",
+    "totalUnits": "Қоймадағы бірлік",
+    "inventoryValue": "Қойма құны",
+    "outOfStock": "Қалдықта жоқ"
   },
   "products": {
     "title": "Тауарлар",

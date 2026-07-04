@@ -36,7 +36,11 @@
   },
   "dashboard": {
     "title": "Home",
-    "subtitle": "Welcome. Sections are in the navigation."
+    "subtitle": "Welcome. Sections are in the header.",
+    "totalProducts": "Products",
+    "totalUnits": "Units in stock",
+    "inventoryValue": "Inventory value",
+    "outOfStock": "Out of stock"
   },
   "products": {
     "title": "Products",

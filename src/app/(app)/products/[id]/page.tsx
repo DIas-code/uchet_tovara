@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { createClient } from "@/lib/supabase/server";
+import { formatMoney } from "@/lib/format";
 import { MovementDialog } from "@/components/movements/movement-dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -52,11 +53,10 @@ export default async function ProductDetailPage({
     продажа: t("sale"),
     возврат: t("return"),
   };
-  const fmt = new Intl.NumberFormat("ru-RU");
   const dfmt = new Intl.DateTimeFormat("ru-RU");
 
   return (
-    <main className="flex flex-1 flex-col gap-6 p-6">
+    <main className="flex flex-1 flex-col gap-6 p-4 sm:p-6">
       <Link
         href="/products"
         className="text-muted-foreground text-sm hover:underline"
@@ -74,7 +74,7 @@ export default async function ProductDetailPage({
           <p className="mt-1 text-sm">
             {tp("stock")}: <b className="tabular-nums">{product.stock}</b>
             {" · "}
-            {tp("salePrice")}: {fmt.format(product.sale_price)}
+            {tp("salePrice")}: {formatMoney(product.sale_price)}
           </p>
         </div>
         <MovementDialog
@@ -86,7 +86,7 @@ export default async function ProductDetailPage({
 
       <section>
         <h2 className="mb-2 font-medium">{t("history")}</h2>
-        <div className="rounded-md border">
+        <div className="overflow-x-auto rounded-md border">
           <Table>
             <TableHeader>
               <TableRow>
