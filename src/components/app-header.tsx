@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
-import { LogOut, Package, Store } from "lucide-react";
+import { BarChart3, LogOut, Package, Store } from "lucide-react";
 import { signOut } from "@/lib/actions/auth";
 import { Button } from "@/components/ui/button";
 import type { CurrentUser } from "@/lib/auth";
@@ -27,6 +27,13 @@ export async function AppHeader({ user }: { user: CurrentUser }) {
           >
             <Package className="size-4" />
             {t("nav.products")}
+          </Link>
+          <Link
+            href="/reports"
+            className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
+          >
+            <BarChart3 className="size-4" />
+            {t("nav.reports")}
           </Link>
         </nav>
       </div>

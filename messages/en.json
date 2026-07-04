@@ -79,5 +79,23 @@
     "history": "Operation history",
     "noHistory": "No operations yet",
     "created": "Operation recorded"
+  },
+  "reports": {
+    "title": "Reports",
+    "from": "From",
+    "to": "To",
+    "apply": "Apply",
+    "sold": "Sold",
+    "revenue": "Revenue",
+    "received": "Received",
+    "returned": "Returned",
+    "exportProducts": "Export products",
+    "exportMovements": "Export operations",
+    "movements": "Operations for the period",
+    "product": "Product",
+    "type": "Type",
+    "date": "Date",
+    "quantity": "Quantity",
+    "empty": "No operations for the selected period"
   }
 }
