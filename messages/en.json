@@ -1,0 +1,77 @@
+{
+  "app": {
+    "title": "Inventory",
+    "description": "Clothing inventory system for boutiques"
+  },
+  "common": {
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "back": "Back",
+    "confirm": "Confirm",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "roles": {
+    "admin": "Administrator",
+    "seller": "Seller"
+  },
+  "nav": {
+    "products": "Products",
+    "reports": "Reports",
+    "logout": "Log out"
+  },
+  "login": {
+    "title": "Sign in",
+    "subtitle": "Enter your boutique login and password",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "loading": "Signing in…",
+    "error": "Invalid email or password"
+  },
+  "dashboard": {
+    "title": "Home",
+    "subtitle": "Welcome. Sections are in the navigation."
+  },
+  "products": {
+    "title": "Products",
+    "add": "Add product",
+    "edit": "Edit product",
+    "search": "Search by code or name",
+    "inStock": "In stock only",
+    "empty": "No products yet",
+    "code": "Code",
+    "name": "Name",
+    "category": "Category",
+    "stock": "Stock",
+    "salePrice": "Sale price",
+    "purchasePrice": "Purchase price",
+    "initialStock": "Initial stock",
+    "actions": "Actions",
+    "save": "Save",
+    "required": "Required field",
+    "priceAdminOnly": "Only an administrator can change prices",
+    "created": "Product added",
+    "updated": "Product updated",
+    "deleted": "Product deleted",
+    "deleteTitle": "Delete product",
+    "deleteConfirm": "Delete product {code}? This cannot be undone."
+  },
+  "movements": {
+    "add": "Record operation",
+    "type": "Operation type",
+    "receipt": "Receipt",
+    "sale": "Sale",
+    "return": "Return",
+    "quantity": "Quantity",
+    "date": "Date",
+    "history": "Operation history",
+    "noHistory": "No operations yet",
+    "created": "Operation recorded"
+  }
+}
