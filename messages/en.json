@@ -22,8 +22,25 @@
   },
   "nav": {
     "products": "Products",
+    "categories": "Categories",
     "reports": "Reports",
     "logout": "Log out"
+  },
+  "categories": {
+    "title": "Categories",
+    "add": "Add",
+    "namePlaceholder": "Category name",
+    "name": "Name",
+    "count": "Products",
+    "actions": "Actions",
+    "rename": "Rename",
+    "empty": "No categories yet",
+    "adminOnly": "Only an administrator can manage categories",
+    "added": "Category added",
+    "renamed": "Category renamed",
+    "deleted": "Category deleted",
+    "deleteTitle": "Delete category",
+    "deleteConfirm": "Delete category “{name}”? Its products become uncategorized."
   },
   "login": {
     "title": "Sign in",

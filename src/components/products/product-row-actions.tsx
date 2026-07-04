@@ -7,6 +7,7 @@ import { Pencil, Trash2 } from "lucide-react";
 import { deleteProduct } from "@/app/(app)/products/actions";
 import { ProductDialog, type ProductForEdit } from "./product-dialog";
 import type { Role } from "@/lib/auth";
+import type { Category } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -25,7 +26,7 @@ export function ProductRowActions({
 }: {
   product: ProductForEdit & { stock: number };
   role: Role;
-  categories: string[];
+  categories: Category[];
 }) {
   const t = useTranslations("products");
   const tc = useTranslations("common");

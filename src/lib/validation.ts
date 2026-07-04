@@ -8,7 +8,7 @@ const emptyToUndef = (v: unknown) =>
 export const productSchema = z.object({
   code: z.string().trim().min(1),
   name: z.string().trim().optional().default(""),
-  category: z.string().trim().optional().default(""),
+  categoryId: z.string().trim().optional().default(""),
   salePrice: z.coerce.number().min(0),
   purchasePrice: z.preprocess(emptyToUndef, z.coerce.number().min(0).optional()),
   initialStock: z.preprocess(

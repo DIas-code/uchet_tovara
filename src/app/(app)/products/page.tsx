@@ -19,7 +19,6 @@ import { formatMoney } from "@/lib/format";
 
 const NO_CATEGORY = "__none__";
 
-// Экранируем спецсимволы фильтра PostgREST в пользовательском вводе.
 function sanitize(q: string) {
   return q.replace(/[,()%*]/g, " ").trim();
 }
@@ -28,11 +27,18 @@ type ProductRow = {
   id: string;
   code: string;
   name: string | null;
-  category: string | null;
+  category_id: string | null;
   stock: number;
   sale_price: number;
   purchase_price: number | null;
+  categories: { name: string } | { name: string }[] | null;
 };
+
+function categoryName(row: ProductRow): string | null {
+  const c = row.categories;
+  if (!c) return null;
+  return Array.isArray(c) ? (c[0]?.name ?? null) : c.name;
+}
 
 export default async function ProductsPage({
   searchParams,
@@ -51,48 +57,56 @@ export default async function ProductsPage({
 
   const supabase = await createClient();
 
-  // Полный список категорий бутика (для плашек и подсказок), не зависит от фильтра.
-  const { data: catRows } = await supabase.from("products").select("category");
-  const categories = Array.from(
-    new Set((catRows ?? []).map((r) => r.category).filter(Boolean) as string[]),
-  ).sort((a, b) => a.localeCompare(b, "ru"));
-  const hasUncategorized = (catRows ?? []).some((r) => !r.category);
+  // Список категорий бутика (для плашек и выпадающего списка в форме).
+  const { data: catData } = await supabase
+    .from("categories")
+    .select("id, name")
+    .order("name", { ascending: true });
+  const categories = (catData ?? []) as { id: string; name: string }[];
 
-  // Основной список с учётом поиска и фильтров.
+  // Есть ли товары без категории (для плашки «Без категории»).
+  const { count: uncategorizedCount } = await supabase
+    .from("products")
+    .select("id", { count: "exact", head: true })
+    .is("category_id", null);
+  const hasUncategorized = (uncategorizedCount ?? 0) > 0;
+
+  // Основной список.
   let query = supabase
     .from("products")
-    .select("id, code, name, category, stock, sale_price, purchase_price")
+    .select(
+      "id, code, name, category_id, stock, sale_price, purchase_price, categories(name)",
+    )
     .order("code", { ascending: true });
   if (q) query = query.or(`code.ilike.%${q}%,name.ilike.%${q}%`);
   if (inStock) query = query.gt("stock", 0);
-  if (category === NO_CATEGORY) query = query.is("category", null);
-  else if (category) query = query.eq("category", category);
+  if (category === NO_CATEGORY) query = query.is("category_id", null);
+  else if (category) query = query.eq("category_id", category);
 
   const { data } = await query;
-  const products = (data ?? []) as ProductRow[];
+  const products = (data ?? []) as unknown as ProductRow[];
 
-  // Ссылка на плашку категории с сохранением поиска и фильтра наличия.
-  function chipHref(cat: string | null) {
+  function chipHref(value: string | null) {
     const p = new URLSearchParams();
     if (rawQ) p.set("q", rawQ);
     if (inStock) p.set("inStock", "1");
-    if (cat) p.set("category", cat);
+    if (value) p.set("category", value);
     const s = p.toString();
     return s ? `/products?${s}` : "/products";
   }
 
   const chips: { key: string; label: string; value: string | null }[] = [
     { key: "all", label: t("allCategories"), value: null },
-    ...categories.map((c) => ({ key: c, label: c, value: c })),
+    ...categories.map((c) => ({ key: c.id, label: c.name, value: c.id })),
   ];
   if (hasUncategorized) {
     chips.push({ key: NO_CATEGORY, label: t("noCategory"), value: NO_CATEGORY });
   }
 
-  // Группировка по категориям для режима «Все».
+  // Группировка по категории для режима «Все».
   const grouped = new Map<string, ProductRow[]>();
   for (const p of products) {
-    const key = p.category ?? t("noCategory");
+    const key = categoryName(p) ?? t("noCategory");
     if (!grouped.has(key)) grouped.set(key, []);
     grouped.get(key)!.push(p);
   }
@@ -109,7 +123,7 @@ export default async function ProductsPage({
         </Link>
       </TableCell>
       <TableCell>{p.name ?? "—"}</TableCell>
-      <TableCell>{p.category ?? "—"}</TableCell>
+      <TableCell>{categoryName(p) ?? "—"}</TableCell>
       <TableCell className="text-right tabular-nums">
         {p.stock > 0 ? p.stock : <Badge variant="secondary">0</Badge>}
       </TableCell>
@@ -117,7 +131,19 @@ export default async function ProductsPage({
         {formatMoney(p.sale_price)}
       </TableCell>
       <TableCell className="text-right">
-        <ProductRowActions product={p} role={role} categories={categories} />
+        <ProductRowActions
+          product={{
+            id: p.id,
+            code: p.code,
+            name: p.name,
+            category_id: p.category_id,
+            sale_price: p.sale_price,
+            purchase_price: p.purchase_price,
+            stock: p.stock,
+          }}
+          role={role}
+          categories={categories}
+        />
       </TableCell>
     </TableRow>
   );
@@ -133,7 +159,6 @@ export default async function ProductsPage({
         categories={categories}
       />
 
-      {/* Плашки-фильтры по категориям */}
       <div className="flex flex-wrap gap-2">
         {chips.map((chip) => {
           const active = (chip.value ?? "") === category;

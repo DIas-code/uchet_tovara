@@ -25,7 +25,7 @@ export async function createProduct(raw: ProductInput): Promise<ActionResult> {
     .insert({
       code: p.code,
       name: p.name || null,
-      category: p.category || null,
+      category_id: p.categoryId || null,
       sale_price: p.salePrice,
       purchase_price: p.purchasePrice ?? null,
     })
@@ -72,7 +72,7 @@ export async function updateProduct(
   const update: Record<string, unknown> = {
     code: p.code,
     name: p.name || null,
-    category: p.category || null,
+    category_id: p.categoryId || null,
   };
   if (user.role === "admin") {
     update.sale_price = p.salePrice;

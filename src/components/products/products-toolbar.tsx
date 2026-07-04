@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { Plus } from "lucide-react";
 import { ProductDialog } from "./product-dialog";
 import type { Role } from "@/lib/auth";
+import type { Category } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -18,7 +19,7 @@ export function ProductsToolbar({
   role: Role;
   q: string;
   inStock: boolean;
-  categories: string[];
+  categories: Category[];
 }) {
   const t = useTranslations("products");
   const router = useRouter();

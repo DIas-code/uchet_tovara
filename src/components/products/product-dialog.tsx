@@ -9,6 +9,7 @@ import {
   updateProduct,
 } from "@/app/(app)/products/actions";
 import type { Role } from "@/lib/auth";
+import type { Category } from "@/lib/types";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,7 +26,7 @@ export type ProductForEdit = {
   id: string;
   code: string;
   name: string | null;
-  category: string | null;
+  category_id: string | null;
   sale_price: number;
   purchase_price: number | null;
 };
@@ -33,11 +34,14 @@ export type ProductForEdit = {
 type FormValues = {
   code: string;
   name: string;
-  category: string;
+  categoryId: string;
   salePrice: string;
   purchasePrice: string;
   initialStock: string;
 };
+
+const selectClass =
+  "border-input focus-visible:border-ring focus-visible:ring-ring/50 h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-xs outline-none focus-visible:ring-[3px]";
 
 export function ProductDialog({
   product,
@@ -48,13 +52,12 @@ export function ProductDialog({
   product?: ProductForEdit;
   role: Role;
   trigger: React.ReactElement;
-  categories?: string[];
+  categories?: Category[];
 }) {
   const t = useTranslations("products");
   const [open, setOpen] = useState(false);
   const isEdit = !!product;
   const canPrice = role === "admin";
-  const categoryListId = "category-suggestions";
 
   const {
     register,
@@ -65,7 +68,7 @@ export function ProductDialog({
     defaultValues: {
       code: product?.code ?? "",
       name: product?.name ?? "",
-      category: product?.category ?? "",
+      categoryId: product?.category_id ?? "",
       salePrice: product ? String(product.sale_price) : "",
       purchasePrice:
         product?.purchase_price != null ? String(product.purchase_price) : "",
@@ -94,10 +97,7 @@ export function ProductDialog({
         <DialogHeader>
           <DialogTitle>{isEdit ? t("edit") : t("add")}</DialogTitle>
         </DialogHeader>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div className="grid gap-2">
             <Label htmlFor="code">{t("code")}</Label>
             <Input id="code" {...register("code", { required: true })} />
@@ -112,17 +112,19 @@ export function ProductDialog({
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="category">{t("category")}</Label>
-            <Input
-              id="category"
-              list={categoryListId}
-              {...register("category")}
-            />
-            <datalist id={categoryListId}>
+            <Label htmlFor="categoryId">{t("category")}</Label>
+            <select
+              id="categoryId"
+              className={selectClass}
+              {...register("categoryId")}
+            >
+              <option value="">{t("noCategory")}</option>
               {categories.map((c) => (
-                <option key={c} value={c} />
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
               ))}
-            </datalist>
+            </select>
           </div>
 
           <div className="grid gap-2">

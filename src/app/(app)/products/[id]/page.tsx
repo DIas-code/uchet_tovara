@@ -36,10 +36,16 @@ export default async function ProductDetailPage({
   const supabase = await createClient();
   const { data: product } = await supabase
     .from("products")
-    .select("id, code, name, category, stock, sale_price")
+    .select("id, code, name, stock, sale_price, categories(name)")
     .eq("id", id)
     .single();
   if (!product) notFound();
+
+  const cat = product.categories as
+    | { name: string }
+    | { name: string }[]
+    | null;
+  const categoryName = Array.isArray(cat) ? (cat[0]?.name ?? null) : (cat?.name ?? null);
 
   const { data: movements } = await supabase
     .from("movements")
@@ -69,7 +75,7 @@ export default async function ProductDetailPage({
           <h1 className="font-mono text-2xl font-semibold">{product.code}</h1>
           <p className="text-muted-foreground">
             {product.name ?? "—"}
-            {product.category ? ` · ${product.category}` : ""}
+            {categoryName ? ` · ${categoryName}` : ""}
           </p>
           <p className="mt-1 text-sm">
             {tp("stock")}: <b className="tabular-nums">{product.stock}</b>
