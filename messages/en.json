@@ -44,6 +44,8 @@
     "edit": "Edit product",
     "search": "Search by code or name",
     "inStock": "In stock only",
+    "allCategories": "All",
+    "noCategory": "Uncategorized",
     "empty": "No products yet",
     "code": "Code",
     "name": "Name",

@@ -43,15 +43,18 @@ export function ProductDialog({
   product,
   role,
   trigger,
+  categories = [],
 }: {
   product?: ProductForEdit;
   role: Role;
   trigger: React.ReactElement;
+  categories?: string[];
 }) {
   const t = useTranslations("products");
   const [open, setOpen] = useState(false);
   const isEdit = !!product;
   const canPrice = role === "admin";
+  const categoryListId = "category-suggestions";
 
   const {
     register,
@@ -110,7 +113,16 @@ export function ProductDialog({
 
           <div className="grid gap-2">
             <Label htmlFor="category">{t("category")}</Label>
-            <Input id="category" {...register("category")} />
+            <Input
+              id="category"
+              list={categoryListId}
+              {...register("category")}
+            />
+            <datalist id={categoryListId}>
+              {categories.map((c) => (
+                <option key={c} value={c} />
+              ))}
+            </datalist>
           </div>
 
           <div className="grid gap-2">

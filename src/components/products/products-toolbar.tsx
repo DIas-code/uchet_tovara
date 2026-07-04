@@ -13,10 +13,12 @@ export function ProductsToolbar({
   role,
   q,
   inStock,
+  categories,
 }: {
   role: Role;
   q: string;
   inStock: boolean;
+  categories: string[];
 }) {
   const t = useTranslations("products");
   const router = useRouter();
@@ -57,6 +59,7 @@ export function ProductsToolbar({
       <div className="ml-auto">
         <ProductDialog
           role={role}
+          categories={categories}
           trigger={
             <Button>
               <Plus className="size-4" />

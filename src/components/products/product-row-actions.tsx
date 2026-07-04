@@ -21,9 +21,11 @@ import {
 export function ProductRowActions({
   product,
   role,
+  categories,
 }: {
   product: ProductForEdit & { stock: number };
   role: Role;
+  categories: string[];
 }) {
   const t = useTranslations("products");
   const tc = useTranslations("common");
@@ -47,6 +49,7 @@ export function ProductRowActions({
       <ProductDialog
         product={product}
         role={role}
+        categories={categories}
         trigger={
           <Button variant="ghost" size="icon" aria-label={t("edit")}>
             <Pencil className="size-4" />
