@@ -98,6 +98,18 @@
     "noHistory": "No operations yet",
     "created": "Operation recorded"
   },
+  "import": {
+    "button": "Import",
+    "title": "Import products from CSV",
+    "hint": "CSV file with columns: Code, Name, Category, Sale price, Purchase price, Stock. Separator “;” (same as export). Products with an existing code are skipped, new categories are created automatically.",
+    "processing": "Processing…",
+    "added": "Added",
+    "skipped": "Skipped (already exist)",
+    "rowLabel": "Row",
+    "done": "Import finished: added {added}, skipped {skipped}",
+    "failed": "Could not import the file",
+    "close": "Close"
+  },
   "reports": {
     "title": "Reports",
     "from": "From",

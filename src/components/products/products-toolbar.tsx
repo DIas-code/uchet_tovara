@@ -5,6 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Plus } from "lucide-react";
 import { ProductDialog } from "./product-dialog";
+import { ImportDialog } from "./import-dialog";
 import type { Role } from "@/lib/auth";
 import type { Category } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -57,7 +58,8 @@ export function ProductsToolbar({
         />
         {t("inStock")}
       </label>
-      <div className="ml-auto">
+      <div className="ml-auto flex gap-2">
+        {role === "admin" && <ImportDialog />}
         <ProductDialog
           role={role}
           categories={categories}
