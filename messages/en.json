@@ -45,7 +45,7 @@
   "login": {
     "title": "Sign in",
     "subtitle": "Enter your boutique login and password",
-    "email": "Email",
+    "username": "Login",
     "password": "Password",
     "submit": "Sign in",
     "loading": "Signing in…",
