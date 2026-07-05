@@ -76,6 +76,7 @@
     "purchasePrice": "Purchase price",
     "initialStock": "Initial stock",
     "actions": "Actions",
+    "operation": "Operation",
     "save": "Save",
     "required": "Required field",
     "priceAdminOnly": "Only an administrator can change prices",

@@ -76,6 +76,7 @@
     "purchasePrice": "Сатып алу бағасы",
     "initialStock": "Бастапқы қалдық",
     "actions": "Әрекеттер",
+    "operation": "Операция",
     "save": "Сақтау",
     "required": "Міндетті өріс",
     "priceAdminOnly": "Бағаны тек әкімші өзгерте алады",

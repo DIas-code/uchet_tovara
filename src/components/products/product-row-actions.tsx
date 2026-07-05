@@ -3,9 +3,10 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
-import { Pencil, Trash2 } from "lucide-react";
+import { ArrowLeftRight, Pencil, Trash2 } from "lucide-react";
 import { deleteProduct } from "@/app/(app)/products/actions";
 import { ProductDialog, type ProductForEdit } from "./product-dialog";
+import { MovementDialog } from "@/components/movements/movement-dialog";
 import type { Role } from "@/lib/auth";
 import type { Category } from "@/lib/types";
 import { Button } from "@/components/ui/button";
@@ -47,6 +48,17 @@ export function ProductRowActions({
 
   return (
     <div className="flex justify-end gap-1">
+      <MovementDialog
+        productId={product.id}
+        productCode={product.code}
+        trigger={
+          <Button variant="outline" size="sm">
+            <ArrowLeftRight className="size-4" />
+            {t("operation")}
+          </Button>
+        }
+      />
+
       <ProductDialog
         product={product}
         role={role}
