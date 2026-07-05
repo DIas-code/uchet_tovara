@@ -148,6 +148,50 @@ export default async function ProductsPage({
     </TableRow>
   );
 
+  // Карточка товара для мобильной версии (без горизонтальной прокрутки).
+  const renderCard = (p: ProductRow) => (
+    <div key={p.id} className="flex flex-col gap-2 p-3">
+      <div className="flex items-start justify-between gap-3">
+        <Link
+          href={`/products/${p.id}`}
+          className="font-mono font-medium hover:underline"
+        >
+          {p.code}
+        </Link>
+        <span className="shrink-0 text-sm tabular-nums">
+          {t("stock")}:{" "}
+          {p.stock > 0 ? (
+            <b>{p.stock}</b>
+          ) : (
+            <Badge variant="secondary">0</Badge>
+          )}
+        </span>
+      </div>
+      {p.name && <div className="text-sm">{p.name}</div>}
+      <div className="text-muted-foreground flex items-center justify-between gap-3 text-sm">
+        <span>{categoryName(p) ?? "—"}</span>
+        <span className="text-foreground shrink-0 font-medium tabular-nums">
+          {formatMoney(p.sale_price)}
+        </span>
+      </div>
+      <div>
+        <ProductRowActions
+          product={{
+            id: p.id,
+            code: p.code,
+            name: p.name,
+            category_id: p.category_id,
+            sale_price: p.sale_price,
+            purchase_price: p.purchase_price,
+            stock: p.stock,
+          }}
+          role={role}
+          categories={categories}
+        />
+      </div>
+    </div>
+  );
+
   return (
     <main className="flex flex-1 flex-col gap-4 p-4 sm:p-6">
       <h1 className="text-2xl font-semibold tracking-tight">{t("title")}</h1>
@@ -179,7 +223,8 @@ export default async function ProductsPage({
         })}
       </div>
 
-      <div className="overflow-x-auto rounded-md border">
+      {/* Компьютер — таблица */}
+      <div className="hidden overflow-x-auto rounded-md border md:block">
         <Table>
           <TableHeader>
             <TableRow>
@@ -221,6 +266,26 @@ export default async function ProductsPage({
                 : products.map(renderRow))}
           </TableBody>
         </Table>
+      </div>
+
+      {/* Телефон — карточки (без горизонтальной прокрутки) */}
+      <div className="divide-y rounded-md border md:hidden">
+        {products.length === 0 && (
+          <div className="text-muted-foreground py-8 text-center text-sm">
+            {t("empty")}
+          </div>
+        )}
+        {products.length > 0 &&
+          (showGrouped
+            ? groups.map(([cat, items]) => (
+                <Fragment key={`mc-${cat}`}>
+                  <div className="bg-muted/50 text-muted-foreground px-3 py-1.5 text-xs font-medium tracking-wide uppercase">
+                    {cat} · {items.length}
+                  </div>
+                  {items.map(renderCard)}
+                </Fragment>
+              ))
+            : products.map(renderCard))}
       </div>
     </main>
   );
